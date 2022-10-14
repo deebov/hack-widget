@@ -3,7 +3,7 @@ import { Widget } from '../demo';
 
 export default function DemoIndex() {
   return (
-    <div className="demo-index">
+    <div >
       <Widget />
     </div>
   );

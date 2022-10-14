@@ -7,6 +7,16 @@ const Widget = () => {
 
   return (
     <div style={{ width: '100vw', height: '100vh' }}>
+      <img
+        src="https://storage.googleapis.com/ultimatedemo/custom/hackathon/group_8.jpg"
+        style={{
+          position: 'fixed',
+          width: '100vw',
+          height: '100vh',
+          objectFit: 'cover',
+          pointerEvents: 'none',
+        }}
+      />
       <button
         onClick={() => {
           setIsOpen(true);
