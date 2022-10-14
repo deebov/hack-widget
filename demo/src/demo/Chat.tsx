@@ -62,9 +62,9 @@ export default () => {
   const { messages, appendMsg, setTyping, prependMsgs, updateMsg } = useMessages();
   const msgRef = React.useRef(null);
   const [conversationId, setConversationId] = useState(uuidv4());
-  const [translation, setTranlation] = useState({
+  const [translation, setTranlation] = useState<{ active: boolean; target: string | null }>({
     active: false,
-    target: null,
+    target: 'de',
   });
 
   window.appendMsg = appendMsg;
@@ -77,13 +77,26 @@ export default () => {
       const isCarousel = msg.carouselData;
 
       if (isButtonCard) {
-        appendMsg({
-          type: 'card',
-          content: {
-            text: msg.text,
-            buttons: msg.buttons,
-          },
-        });
+        if (translation.active) {
+          translate({ target: translation.target, text: msg.text }).then((res) => {
+            appendMsg({
+              type: 'card',
+              content: {
+                text: res.data.text,
+                original: msg.text,
+                buttons: msg.buttons,
+              },
+            });
+          });
+        } else {
+          appendMsg({
+            type: 'card',
+            content: {
+              text: msg.text,
+              buttons: msg.buttons,
+            },
+          });
+        }
       } else if (isCarousel) {
         appendMsg({
           type: 'product-carousel',
@@ -93,24 +106,39 @@ export default () => {
           position: 'left',
         });
       } else {
-        appendMsg({
-          type: 'text',
-          content: { text: msg.text },
-          position: 'left',
-          // user: BOT_USER,
-        });
-
-        msg.buttons.forEach((btn) => {
-          appendMsg({
-            type: 'button',
-            content: { text: btn.text },
-            position: 'left',
-            // user: {
-            //   avatar:
-            //     'https://thehub-io.imgix.net/files/s3/20220311105639-ad1226c301da6a97cd2897b72d32703b.png?fit=crop&w=0&h=0&q=60',
-            // },
+        if (translation.active) {
+          translate({ target: translation.target, text: msg.text }).then((res) => {
+            appendMsg({
+              type: 'text',
+              content: { text: res.data.text, original: msg.text },
+              position: 'left',
+            });
           });
-        });
+
+          msg.buttons.forEach((btn) => {
+            translate({ target: translation.target, text: btn.text }).then((res) => {
+              appendMsg({
+                type: 'button',
+                content: { text: res.data.text, original: btn.text },
+                position: 'left',
+              });
+            });
+          });
+        } else {
+          appendMsg({
+            type: 'text',
+            content: { text: msg.text },
+            position: 'left',
+          });
+
+          msg.buttons.forEach((btn) => {
+            appendMsg({
+              type: 'button',
+              content: { text: btn.text },
+              position: 'left',
+            });
+          });
+        }
       }
     });
   };
@@ -237,7 +265,7 @@ export default () => {
         return (
           <Button
             onClick={() => {
-              handleSend('button', content.text);
+              handleSend('button', content.original || content.text);
             }}
           >
             {content.text}
@@ -251,7 +279,7 @@ export default () => {
               {content.buttons.map((btn: { text: string }) => (
                 <Button
                   onClick={() => {
-                    handleSend('button', btn.text);
+                    handleSend('button', btn.original || btn.text);
                   }}
                 >
                   {btn.text}
@@ -263,7 +291,7 @@ export default () => {
 
       case 'product-carousel':
         return (
-          <Carousel>
+          <Carousel dots={false}>
             {(content.cards as CarouselData['cards']).map((card) => (
               <Card size="xl">
                 <CardMedia image={card.imageUrl} />
@@ -292,27 +320,25 @@ export default () => {
   }
 
   const translateAndUpdateMessage = async (message: MessageProps) => {
-    // if(translation.active) {
-    //   setTranlation({
-    //     active:true,
-    //     target: 'de'
-    //   })
-    // } else {
-
-    // }
-    console.log(message);
+    if (!translation.active) {
+      setTranlation({
+        active: true,
+        target: 'de',
+      });
+    } else {
+    }
 
     if (message.type === 'card') {
-      const textRes = await translate({ target: 'es', text: message.content.text });
+      const textRes = await translate({ target: translation.target, text: message.content.text });
 
       const promises = message.content.buttons.map((btn: any) => {
-        return translate({ target: 'es', text: btn.text });
+        return translate({ target: translation.target, text: btn.text });
       });
 
       Promise.allSettled(promises).then((result) => {
-        const texts = result.map((value) => {
+        const texts = result.map((value, idx) => {
           if (value.status === 'fulfilled') {
-            return { text: value.value.data.text };
+            return { text: value.value.data.text, original: message.content.buttons[idx].text };
           }
         });
 
@@ -320,17 +346,19 @@ export default () => {
           ...message,
           content: {
             text: textRes.data.text,
+            original: message.content.text,
             buttons: texts,
           },
         });
       });
     } else {
-      const res = await translate({ target: 'es', text: message.content.text });
+      const res = await translate({ target: translation.target, text: message.content.text });
 
       updateMsg(message._id, {
         ...message,
         content: {
-          text: res.data.text + ' [AI-translated]',
+          text: res.data.text,
+          original: message.content.text,
         },
       });
     }
