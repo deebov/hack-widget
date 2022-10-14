@@ -18,6 +18,7 @@ export { default as Goods } from './Goods';
 export { default as Icon } from './Icon';
 export { default as Image } from './Image';
 export { default as InfiniteScroll } from './InfiniteScroll';
+export { default as Widget } from './Widget';
 export { default as Input } from './Input';
 export { default as List } from './List';
 export { default as Loading } from './Loading';

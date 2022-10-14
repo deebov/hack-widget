@@ -6,6 +6,39 @@ body {
   margin: 0;
 }
 
+
+.widget-btn {
+  color: white;
+  width: 70px;
+  height: 70px;
+  border-radius: 30px;
+  background:  linear-gradient(to bottom,#1f1f28,#1f1f28);
+  border: none;
+  cursor: pointer;
+
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  transition: all 200ms ease-in-out;
+
+  &:hover {
+    background: linear-gradient(to bottom,#1f1f28,#5d5adc);
+    box-shadow: 0 2px 12px -2px #5d5adc;
+  }
+}
+
+.widget-container {
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  width: 400px;
+  height: 600px;
+  overflow-y: auto;
+
+  border: 2px solid #1f1f28;
+  border-radius: 12px;
+}
+
 .demo-index {
   padding: 20px 16px;
   box-sizing: border-box;

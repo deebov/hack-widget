@@ -2,6 +2,7 @@ export const navConfig = [
   {
     title: 'dialog component',
     list: [
+      { name: 'widget', code: 'widget' },
       { name: 'chat1', code: 'chat1' },
       { name: 'dialog container', code: 'chat' },
       { name: 'bubble', code: 'bubble' },

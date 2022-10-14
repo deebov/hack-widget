@@ -11,7 +11,7 @@ export default () => (
             content="text prompt"
             as="button"
             onClick={() => {
-              toast.show('Tips', '');
+              toast.show('Tips', 'success');
             }}
             rightIcon="chevron-right"
           />

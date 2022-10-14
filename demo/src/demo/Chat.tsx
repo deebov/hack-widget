@@ -6,7 +6,6 @@ import Chat, {
   Button,
   Card,
   CardActions,
-  CardContent,
   CardMedia,
   CardText,
   CardTitle,
@@ -17,7 +16,6 @@ import Chat, {
 } from '../../../src';
 import { User } from '../../../src/components/Message/Message';
 import { DemoPage } from '../components';
-type MessageWithoutId = Omit<MessageProps, '_id'>;
 
 type CarouselData = {
   cards: {
@@ -165,7 +163,7 @@ export default () => {
   }, [conversationId]);
 
   const sendMessage = async (text: string, cardIndex?: number) => {
-    const body = {
+    const body: any = {
       botId: '6347e26e5127c7c5e48f6bef',
       conversationId: conversationId,
       eventType: 'message',
@@ -247,7 +245,7 @@ export default () => {
           <Card size="xl">
             <CardText>{content.text}</CardText>
             <CardActions direction="column">
-              {content.buttons.map((btn) => (
+              {content.buttons.map((btn: { text: string }) => (
                 <Button
                   onClick={() => {
                     handleSend('button', btn.text);
@@ -320,46 +318,44 @@ export default () => {
   }
 
   return (
-    <DemoPage>
-      <div style={{ height: 'calc(100vh - 48px)', marginTop: '-12px' }}>
-        <Chat
-          // onRefresh={handleRefresh}
-          navbar={{
-            leftContent: {
-              icon: 'chevron-left',
-              title: 'Back',
-            },
-            rightContent: [
-              {
-                icon: 'apps',
-                title: 'Applications',
-              },
-              {
-                icon: 'ellipsis-h',
-                title: 'More',
-              },
-            ],
-            title: 'Assistant',
-          }}
-          locale="en-US"
-          // loadMoreText='Load More'
-          // rightAction={{ icon: 'compass' }}
-          placeholder="Enter your question..."
-          messagesRef={msgRef}
-          wideBreakpoint="600px"
-          messages={messages}
-          renderMessageContent={renderMessageContent}
-          onSend={handleSend}
-          onToolbarClick={handleToolbarClick}
-          toolbar={[
+    <div style={{ height: '100%' }}>
+      <Chat
+        // onRefresh={handleRefresh}
+        navbar={{
+          leftContent: {
+            icon: 'chevron-left',
+            title: 'Back',
+          },
+          rightContent: [
             {
-              type: 'translate',
-              title: translation.active ? 'Disable translation' : 'Enable translation',
-              img: 'https://cdn4.iconfinder.com/data/icons/logos-4/24/Translate-512.png',
+              icon: 'apps',
+              title: 'Applications',
             },
-          ]}
-        />
-      </div>
-    </DemoPage>
+            {
+              icon: 'ellipsis-h',
+              title: 'More',
+            },
+          ],
+          title: 'Assistant',
+        }}
+        locale="en-US"
+        // loadMoreText='Load More'
+        // rightAction={{ icon: 'compass' }}
+        placeholder="Enter your question..."
+        messagesRef={msgRef}
+        wideBreakpoint="600px"
+        messages={messages}
+        renderMessageContent={renderMessageContent}
+        onSend={handleSend}
+        onToolbarClick={handleToolbarClick}
+        toolbar={[
+          {
+            type: 'translate',
+            title: translation.active ? 'Disable translation' : 'Enable translation',
+            img: 'https://cdn4.iconfinder.com/data/icons/logos-4/24/Translate-512.png',
+          },
+        ]}
+      />
+    </div>
   );
 };
