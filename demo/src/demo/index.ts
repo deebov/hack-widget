@@ -3,6 +3,7 @@ export { default as Bubble } from './Bubble';
 export { default as Button } from './Button';
 export { default as Card } from './Card';
 export { default as Carousel } from './Carousel';
+export { default as Chat1 } from './ChatNew';
 export { default as Chat } from './Chat';
 export { default as Checkbox } from './Checkbox';
 export { default as ComponentProvider } from './ComponentProvider';

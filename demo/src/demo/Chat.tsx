@@ -1,271 +1,227 @@
-import React from 'react';
-import { DemoPage, DemoSection } from '../components';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import Chat, {
   Bubble,
-  MessageProps,
-  useMessages,
-  QuickReplyItemProps,
-  useQuickReplies,
+  Button,
   Card,
-  CardTitle,
+  CardActions,
+  CardContent,
+  CardMedia,
   CardText,
-  List,
-  ListItem,
-  Flex,
-  FlexItem,
-  ScrollView,
+  CardTitle,
+  Carousel,
+  MessageProps,
   ToolbarItemProps,
+  useMessages,
 } from '../../../src';
-import OrderSelector from './OrdderSelector';
-
+import { User } from '../../../src/components/Message/Message';
+import { DemoPage } from '../components';
 type MessageWithoutId = Omit<MessageProps, '_id'>;
 
-const initialMessages: MessageWithoutId[] = [
-  {
-    type: 'system',
-    content: { text: '88VIP exclusive intelligent customer service Xiaomi serves you' },
-  },
-  {
-    type: 'text',
-    content: {
-      text: 'Hi, I am your exclusive smart assistant Xiaomi, please feel free to contact me if you have any questions~',
-    },
-    user: { avatar: '//gw.alicdn.com/tfs/TB1DYHLwMHqK1RjSZFEXXcGMXXa-56-62.svg', name: 'Xiaomi' },
-    createdAt: Date.now(),
-    hasTime: true,
-  },
-  {
-    type: 'guess-you',
-  },
-  {
-    type: 'skill-cards',
-  },
-  {
-    type: 'text',
-    content: { text: 'Xiaomi I want to check my logistics information' },
-    position: 'right',
-    user: { avatar: '//gw.alicdn.com/tfs/TB1DYHLwMHqK1RjSZFEXXcGMXXa-56-62.svg' },
-  },
-  {
-    type: 'image',
-    content: {
-      picUrl: '//img.alicdn.com/tfs/TB1p_nirYr1gK0jSZR0XXbP8XXa-300-300.png',
-    },
-  },
-  {
-    type: 'system',
-    content: {
-      text: 'This service has been automatically ended because you have not spoken for a long time or logged out of Xiaomi (leaving the page, locking the screen, etc.)',
-    },
-  },
-];
+type CarouselData = {
+  cards: {
+    imageUrl: string;
+    title: string;
+    description: string;
+    buttons: {
+      actions: [];
+      text: string;
+      type: string;
+      next: {
+        type: string;
+        ref: string;
+      };
+    }[];
+  }[];
+};
 
-const defaultQuickReplies = [
-  {
-    icon: 'shopping-bag',
-    name: 'Consult order questions (highlighted)',
-    code: 'orderSelector',
-    isHighlight: true,
-  },
-  {
-    icon: 'shopping-bag',
-    name: 'How to request a refund (highlighted)',
-    code: 'orderSelector',
-    isHighlight: true,
-  },
-  {
-    icon: 'message',
-    name: 'Contact Human Services (highlighted + new)',
-    code: 'q1',
-    isNew: true,
-    isHighlight: true,
-  },
-  {
-    name: 'Quality Issues (new)',
-    code: 'q3',
-    isNew: true,
-  },
-  {
-    name: "Seller's copy",
-    code: 'q4',
-  },
-  {
-    name: 'Top 5 Shortcut Phrases',
-    code: 'q5',
-  },
-  {
-    name: '6 Weak Shortcut Phrases',
-    code: 'q6',
-  },
-];
+type Response = {
+  confidenceThreshold: number;
+  entities: [];
+  messages: { text: string; buttons: { text: string }[]; carouselData?: CarouselData }[];
+  predictedIntents: [];
+};
 
-const skillList = [
-  { title: 'phone bill recharge', desc: 'Smart recharge Smart recharge' },
-  { title: 'Evaluation management', desc: '我的评价' },
-  { title: 'Contact the merchant', desc: 'quick contact' },
-  { title: 'Red Packet Cards', desc: 'Use discount' },
-  { title: 'Change address', desc: 'Change address' },
-];
+const translate = async (payload: { target: string; text: string }) => {
+  const res = await axios.post('https://chat.staging.ultimate.ai/api/translate', payload, {
+    headers: { Authorization: 'HACK-PACK-API-KEY' },
+  });
+  return res;
+};
 
-const toolbar = [
-  {
-    type: 'smile',
-    icon: 'smile',
-    title: 'expression',
-  },
-  {
-    type: 'orderSelector',
-    icon: 'shopping-bag',
-    title: 'baby',
-  },
-  {
-    type: 'image',
-    icon: 'image',
-    title: 'picture',
-  },
-  {
-    type: 'camera',
-    icon: 'camera',
-    title: 'Photograph',
-  },
-  {
-    type: 'photo',
-    title: 'Photo',
-    img: 'https://gw.alicdn.com/tfs/TB1eDjNj.T1gK0jSZFrXXcNCXXa-80-80.png',
-  },
-];
+const BOT_USER: User = {
+  name: 'UltiMate',
+  avatar:
+    'https://thehub-io.imgix.net/files/s3/20220311105639-ad1226c301da6a97cd2897b72d32703b.png?fit=crop&w=300&h=300&q=60',
+};
 
 export default () => {
   // message list
-  const { messages, appendMsg, setTyping, prependMsgs } = useMessages(initialMessages);
-  const { quickReplies, replace } = useQuickReplies(defaultQuickReplies);
+  const { messages, appendMsg, setTyping, prependMsgs, updateMsg } = useMessages();
   const msgRef = React.useRef(null);
+  const [conversationId, setConversationId] = useState(uuidv4());
+  const [translation, setTranlation] = useState({
+    active: false,
+    target: null,
+  });
 
   window.appendMsg = appendMsg;
   window.msgRef = msgRef;
 
+  const appendResponseMessages = (_messages: Response['messages']) => {
+    _messages.forEach((msg) => {
+      const isButtonCard = msg.text?.trim() && msg.buttons?.length;
+
+      const isCarousel = msg.carouselData;
+
+      if (isButtonCard) {
+        appendMsg({
+          type: 'card',
+          content: {
+            text: msg.text,
+            buttons: msg.buttons,
+          },
+        });
+      } else if (isCarousel) {
+        appendMsg({
+          type: 'product-carousel',
+          content: {
+            cards: msg.carouselData?.cards,
+          },
+          position: 'left',
+        });
+      } else {
+        appendMsg({
+          type: 'text',
+          content: { text: msg.text },
+          position: 'left',
+          // user: BOT_USER,
+        });
+
+        msg.buttons.forEach((btn) => {
+          appendMsg({
+            type: 'button',
+            content: { text: btn.text },
+            position: 'left',
+            // user: {
+            //   avatar:
+            //     'https://thehub-io.imgix.net/files/s3/20220311105639-ad1226c301da6a97cd2897b72d32703b.png?fit=crop&w=0&h=0&q=60',
+            // },
+          });
+        });
+      }
+    });
+  };
+
+  useEffect(() => {
+    const startSession = async () => {
+      try {
+        const res = await axios.post<Response>(
+          'https://chat.staging.ultimate.ai/api/v2/automation',
+          {
+            botId: '6347e26e5127c7c5e48f6bef',
+            conversationId: conversationId,
+            eventType: 'startSession',
+          },
+          {
+            headers: {
+              Authorization:
+                'Basic ' +
+                'bWljaGFsLm1pc2Noa2VyK2hhY2thdGhvbkB1bHRpbWF0ZS5haTpIYWNrYXRob25AMTIzNA==',
+            },
+          },
+        );
+
+        appendResponseMessages(res.data.messages);
+      } catch (error) {}
+    };
+
+    const endSession = async () => {
+      try {
+        const res = await axios.post(
+          'https://chat.staging.ultimate.ai/api/v2/automation',
+          {
+            botId: '6347e26e5127c7c5e48f6bef',
+            conversationId: conversationId,
+            eventType: 'endSession',
+          },
+          {
+            headers: {
+              Authorization:
+                'Basic ' +
+                'bWljaGFsLm1pc2Noa2VyK2hhY2thdGhvbkB1bHRpbWF0ZS5haTpIYWNrYXRob25AMTIzNA==',
+            },
+          },
+        );
+      } catch (error) {}
+    };
+
+    startSession();
+
+    return function cleanup() {
+      endSession();
+    };
+  }, [conversationId]);
+
+  const sendMessage = async (text: string, cardIndex?: number) => {
+    const body = {
+      botId: '6347e26e5127c7c5e48f6bef',
+      conversationId: conversationId,
+      eventType: 'message',
+      text: text,
+    };
+
+    if (typeof cardIndex === 'number') {
+      body.cardIndex = cardIndex;
+    }
+
+    const res = await axios.post<Response>(
+      'https://chat.staging.ultimate.ai/api/v2/automation',
+      body,
+      {
+        headers: {
+          Authorization:
+            'Basic ' + 'bWljaGFsLm1pc2Noa2VyK2hhY2thdGhvbkB1bHRpbWF0ZS5haTpIYWNrYXRob25AMTIzNA==',
+        },
+      },
+    );
+
+    return res;
+  };
+
   // send callback
-  function handleSend(type: string, val: string) {
+  async function handleSend(type: string, val: string, cardIndex?: number) {
     if (type === 'text' && val.trim()) {
-      // TODO: send request
       appendMsg({
         type: 'text',
         content: { text: val },
         position: 'right',
       });
 
-      setTimeout(() => {
-        setTyping(true);
-      }, 10);
+      setTyping(true);
 
-      // Mock reply message
-      setTimeout(() => {
-        appendMsg({
-          type: 'text',
-          content: { text: "Dear, what's your problem? Please briefly describe your problem~" },
-        });
-      }, 1000);
+      const res = await sendMessage(val, cardIndex);
+
+      setTyping(false);
+
+      appendResponseMessages(res.data.messages);
     }
-  }
 
-  // Shortcut phrase callback, you can make different operations according to item data, here is an example of sending a text message
-  function handleQuickReplyClick(item: QuickReplyItemProps) {
-    handleSend('text', item.name);
-
-    if (item.code === 'q1') {
-      replace([
-        {
-          name: 'phrase a',
-          code: 'qa',
-          isHighlight: true,
-        },
-        {
-          name: 'phrase b',
-          code: 'qb',
-        },
-      ]);
-    } else if (item.code === 'orderSelector') {
+    if (type === 'button') {
       appendMsg({
-        type: 'order-selector',
-        content: {},
+        type: 'text',
+        content: { text: val },
+        position: 'right',
       });
-    }
-  }
 
-  function handleRefresh() {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        const now = Date.now();
+      setTyping(true);
 
-        prependMsgs([
-          {
-            _id: now + '1111',
-            type: 'text',
-            content: {
-              text: '11111 Hi, I am your exclusive smart assistant Xiaomi, please feel free to contact me if you have any questions~',
-            },
-            user: { avatar: '//gw.alicdn.com/tfs/TB1DYHLwMHqK1RjSZFEXXcGMXXa-56-62.svg' },
-          },
-          {
-            _id: now + '2222',
-            type: 'text',
-            content: {
-              text: '22222 Hi, I am your exclusive smart assistant Xiaomi, please feel free to contact me if you have any questions~',
-            },
-            user: { avatar: '//gw.alicdn.com/tfs/TB1DYHLwMHqK1RjSZFEXXcGMXXa-56-62.svg' },
-          },
-          {
-            _id: now + '3333',
-            type: 'text',
-            content: {
-              text: '333 Hi, I am your exclusive intelligent assistant Xiaomi, please feel free to contact me if you have any questions~',
-            },
-            user: { avatar: '//gw.alicdn.com/tfs/TB1DYHLwMHqK1RjSZFEXXcGMXXa-56-62.svg' },
-          },
-          {
-            _id: now + '4444',
-            type: 'text',
-            content: {
-              text: "444 Hi, I'm your exclusive intelligent assistant Xiaomi, please feel free to contact me if you have any questions~",
-            },
-            user: { avatar: '//gw.alicdn.com/tfs/TB1DYHLwMHqK1RjSZFEXXcGMXXa-56-62.svg' },
-          },
-          {
-            _id: now + '5555',
-            type: 'text',
-            content: {
-              text: '555 Hi，I am your exclusive smart assistant Xiaomi, please feel free to contact me if you have any questions~',
-            },
-            user: { avatar: '//gw.alicdn.com/tfs/TB1DYHLwMHqK1RjSZFEXXcGMXXa-56-62.svg' },
-          },
-          {
-            _id: now + '6666',
-            type: 'text',
-            content: {
-              text: '666 Hi，I am your exclusive smart assistant Xiaomi, please feel free to contact me if you have any questions~',
-            },
-            user: { avatar: '//gw.alicdn.com/tfs/TB1DYHLwMHqK1RjSZFEXXcGMXXa-56-62.svg' },
-          },
-          {
-            _id: now + '7777',
-            type: 'text',
-            content: {
-              text: '777 Hi，I am your exclusive smart assistant Xiaomi, please feel free to contact me if you have any questions~',
-            },
-            user: { avatar: '//gw.alicdn.com/tfs/TB1DYHLwMHqK1RjSZFEXXcGMXXa-56-62.svg' },
-          },
-        ]);
-        resolve({});
-      }, 800);
-    });
-  }
+      const res = await sendMessage(val, cardIndex);
 
-  function handleToolbarClick(item: ToolbarItemProps) {
-    if (item.type === 'orderSelector') {
-      appendMsg({
-        type: 'order-selector',
-        content: {},
-      });
+      setTyping(false);
+
+      appendResponseMessages(res.data.messages);
     }
   }
 
@@ -276,60 +232,90 @@ export default () => {
     switch (type) {
       case 'text':
         return <Bubble content={content.text} />;
-      case 'guess-you':
+      case 'button':
         return (
-          <Card fluid>
-            <Flex>
-              <div className="guess-you-aside">
-                <h1>Guess you want to ask</h1>
-              </div>
-              <FlexItem>
-                <List>
-                  <ListItem
-                    content="Where does my red packet refund go?"
-                    as="a"
-                    rightIcon="chevron-right"
-                  />
-                  <ListItem
-                    content="Where does my red packet refund go?"
-                    as="a"
-                    rightIcon="chevron-right"
-                  />
-                  <ListItem content="How to modify the review?" as="a" rightIcon="chevron-right" />
-                  <ListItem
-                    content="Consultation on logistics issues"
-                    as="a"
-                    rightIcon="chevron-right"
-                  />
-                </List>
-              </FlexItem>
-            </Flex>
+          <Button
+            onClick={() => {
+              handleSend('button', content.text);
+            }}
+          >
+            {content.text}
+          </Button>
+        );
+      case 'card':
+        return (
+          <Card size="xl">
+            <CardText>{content.text}</CardText>
+            <CardActions direction="column">
+              {content.buttons.map((btn) => (
+                <Button
+                  onClick={() => {
+                    handleSend('button', btn.text);
+                  }}
+                >
+                  {btn.text}
+                </Button>
+              ))}
+            </CardActions>
           </Card>
         );
-      case 'skill-cards':
+
+      case 'product-carousel':
         return (
-          <ScrollView
-            className="skill-cards"
-            data={skillList}
-            fullWidth
-            renderItem={(item) => (
-              <Card>
-                <CardTitle>{item.title}</CardTitle>
-                <CardText>{item.desc}</CardText>
+          <Carousel>
+            {(content.cards as CarouselData['cards']).map((card) => (
+              <Card size="xl">
+                <CardMedia image={card.imageUrl} />
+                <CardTitle>{card.title}</CardTitle>
+                <CardText>{card.description}</CardText>
+                {/* <CardContent>Card content</CardContent> */}
+                <CardActions direction="column">
+                  {card.buttons.map((btn, idx) => (
+                    <Button
+                      onClick={() => {
+                        handleSend('button', btn.text, idx);
+                      }}
+                    >
+                      {btn.text}
+                    </Button>
+                  ))}
+                </CardActions>
               </Card>
-            )}
-          />
+            ))}
+          </Carousel>
         );
-      case 'order-selector':
-        return <OrderSelector />;
-      case 'image':
-        return (
-          <Bubble type="image">
-            <img src={content.picUrl} alt="" />
-          </Bubble>
-        );
+
       default:
         return null;
+    }
+  }
+
+  const translateAndUpdateMessage = async (message: MessageProps) => {
+    // if(translation.active) {
+    //   setTranlation({
+    //     active:true,
+    //     target: 'de'
+    //   })
+    // } else {
+
+    // }
+    const res = await translate({ target: 'es', text: message.content.text });
+
+    updateMsg(message._id, {
+      ...message,
+      content: {
+        text: res.data.text + ' [AI-translated]',
+      },
+    });
+  };
+
+  function handleToolbarClick(item: ToolbarItemProps) {
+    if (item.type === 'translate') {
+      messages.forEach((msg) => {
+        if ((msg.type === 'text' || msg.type === 'button') && msg.position === 'left') {
+          translateAndUpdateMessage(msg);
+        }
+      });
     }
   }
 
@@ -337,7 +323,7 @@ export default () => {
     <DemoPage>
       <div style={{ height: 'calc(100vh - 48px)', marginTop: '-12px' }}>
         <Chat
-          onRefresh={handleRefresh}
+          // onRefresh={handleRefresh}
           navbar={{
             leftContent: {
               icon: 'chevron-left',
@@ -356,18 +342,22 @@ export default () => {
             title: 'Assistant',
           }}
           locale="en-US"
-          rightAction={{ icon: 'compass' }}
-          toolbar={toolbar}
+          // loadMoreText='Load More'
+          // rightAction={{ icon: 'compass' }}
+          placeholder="Enter your question..."
           messagesRef={msgRef}
-          onToolbarClick={handleToolbarClick}
-          recorder={{ canRecord: true }}
           wideBreakpoint="600px"
           messages={messages}
           renderMessageContent={renderMessageContent}
-          quickReplies={quickReplies}
-          onQuickReplyClick={handleQuickReplyClick}
           onSend={handleSend}
-          onImageSend={() => Promise.resolve()}
+          onToolbarClick={handleToolbarClick}
+          toolbar={[
+            {
+              type: 'translate',
+              title: translation.active ? 'Disable translation' : 'Enable translation',
+              img: 'https://cdn4.iconfinder.com/data/icons/logos-4/24/Translate-512.png',
+            },
+          ]}
         />
       </div>
     </DemoPage>
