@@ -4,7 +4,7 @@ import { MediaObject } from '../../../src';
 
 export default () => (
   <DemoPage>
-    <DemoSection title="基础用法">
+    <DemoSection title="Basic usage">
       <MediaObject
         picUrl="https://gw.alicdn.com/tfs/TB17TaySSzqK1RjSZFHXXb3CpXa-80-80.svg"
         picAlt="ChatUI"

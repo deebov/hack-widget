@@ -4,7 +4,7 @@ import { Loading } from '../../../src';
 
 export default () => (
   <DemoPage>
-    <DemoSection title="基础用法">
+    <DemoSection title="Basic usage">
       <Loading />
     </DemoSection>
     <DemoSection title="加载文案">

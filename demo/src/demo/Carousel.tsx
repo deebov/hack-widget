@@ -11,7 +11,7 @@ const imgs = [
 
 export default () => (
   <DemoPage>
-    <DemoSection title="基础用法">
+    <DemoSection title="Basic usage">
       <Carousel autoPlay>
         {imgs.map((img, i) => (
           <div>

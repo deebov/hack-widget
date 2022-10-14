@@ -4,7 +4,7 @@ import { Divider } from '../../../src';
 
 export default () => (
   <DemoPage>
-    <DemoSection title="基础用法">
+    <DemoSection title="Basic usage">
       <Divider />
     </DemoSection>
     <DemoSection title="展示文字">

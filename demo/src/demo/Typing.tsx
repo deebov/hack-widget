@@ -4,7 +4,7 @@ import { Typing } from '../../../src';
 
 export default () => (
   <DemoPage>
-    <DemoSection title="基础用法">
+    <DemoSection title="Basic usage">
       <div className="Message left">
         <Typing />
       </div>

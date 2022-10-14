@@ -8,7 +8,7 @@ export default () => {
 
   return (
     <DemoPage>
-      <DemoSection title="基础用法">
+      <DemoSection title="Basic usage">
         <Tabs index={tabIndex} onChange={setTabIndex}>
           <Tab label="标签1">
             <p>内容1</p>

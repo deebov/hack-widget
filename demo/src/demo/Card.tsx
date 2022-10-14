@@ -12,7 +12,7 @@ import {
 
 export default () => (
   <DemoPage>
-    <DemoSection title="基础用法">
+    <DemoSection title="Basic usage">
       <Card size="xl">
         <CardMedia image="//gw.alicdn.com/tfs/TB1Xv5_vlr0gK0jSZFnXXbRRXXa-427-240.png" />
         <CardTitle subtitle="subtitle">Card title</CardTitle>

@@ -7,7 +7,7 @@ export default () => {
 
   return (
     <DemoPage>
-      <DemoSection title="基础用法">
+      <DemoSection title="Basic usage">
         <Card>
           <List>
             <ListItem
@@ -29,7 +29,7 @@ export default () => {
         }}
         actions={[
           {
-            label: '确认',
+            label: 'confirm',
             color: 'primary',
           },
         ]}

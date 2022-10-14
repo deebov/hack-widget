@@ -4,7 +4,7 @@ import { SystemMessage } from '../../../src';
 
 export default () => (
   <DemoPage>
-    <DemoSection title="基础用法">
+    <DemoSection title="Basic usage">
       <SystemMessage content="88VIP专属智能客服小蜜 为您服务" />
     </DemoSection>
   </DemoPage>

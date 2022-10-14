@@ -18,7 +18,7 @@ export default () => {
 
   return (
     <DemoPage>
-      <DemoSection title="基础用法" bg="gray">
+      <DemoSection title="Basic usage" bg="gray">
         <Radio label="备选项A" value="a" />
         <Radio label="备选项B" value="b" checked />
         <Radio label="备选项C" value="c" disabled />

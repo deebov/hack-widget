@@ -5,7 +5,7 @@ import { Navbar } from '../../../src';
 export default () => {
   return (
     <DemoPage>
-      <DemoSection title="基础用法">
+      <DemoSection title="Basic usage">
         <Navbar title="客服小蜜" />
       </DemoSection>
       <DemoSection title="返回上级">

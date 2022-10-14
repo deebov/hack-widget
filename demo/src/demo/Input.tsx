@@ -12,7 +12,7 @@ export default () => {
 
   return (
     <DemoPage>
-      <DemoSection title="基础用法">
+      <DemoSection title="Basic usage">
         <Input value={value1} onChange={setValue1} placeholder="请输入..." />
       </DemoSection>
       <DemoSection title="多行输入">

@@ -1,39 +1,39 @@
 export const navConfig = [
   {
-    title: '对话组件',
+    title: 'dialog component',
     list: [
-      { name: '对话容器', code: 'chat' },
-      { name: '气泡', code: 'bubble' },
-      { name: '卡片', code: 'card' },
-      { name: '文件卡片', code: 'file-card' },
-      { name: '消息状态', code: 'message-status' },
-      { name: '系统消息', code: 'system-message' },
-      { name: '输入中', code: 'typing' },
+      { name: 'dialog container', code: 'chat' },
+      { name: 'bubble', code: 'bubble' },
+      { name: 'card', code: 'card' },
+      { name: 'file card', code: 'file-card' },
+      { name: 'message status', code: 'message-status' },
+      { name: 'system information', code: 'system-message' },
+      { name: 'input (typing)', code: 'typing' },
     ],
   },
   {
-    title: '基础组件',
+    title: 'basic components',
     list: [
-      { name: '按钮', code: 'button' },
-      { name: '布局', code: 'flex' },
-      { name: '图标', code: 'icon' },
-      { name: '图片', code: 'image' },
+      { name: 'button', code: 'button' },
+      { name: 'layout', code: 'flex' },
+      { name: 'icon', code: 'icon' },
+      { name: 'image', code: 'image' },
     ],
   },
   {
-    title: '表单组件',
+    title: 'form component',
     list: [
-      { name: '复选框', code: 'checkbox' },
-      { name: '表单', code: 'form' },
-      { name: '单选框', code: 'radio' },
-      { name: '点赞点踩', code: 'rate-actions' },
-      { name: '输入框', code: 'input' },
-      { name: '搜索框', code: 'search' },
-      { name: '选择器', code: 'select' },
+      { name: 'checkbox', code: 'checkbox' },
+      { name: 'form', code: 'form' },
+      { name: 'radio', code: 'radio' },
+      { name: 'rate actions', code: 'rate-actions' },
+      { name: 'input', code: 'input' },
+      { name: 'search', code: 'search' },
+      { name: 'selelctor', code: 'select' },
     ],
   },
   {
-    title: '展示组件',
+    title: 'Display components',
     list: [
       { name: '头像', code: 'avatar' },
       { name: '图片轮播', code: 'carousel' },
@@ -55,7 +55,7 @@ export const navConfig = [
     ],
   },
   {
-    title: '反馈组件',
+    title: 'feedback component',
     list: [
       { name: '无限滚动', code: 'infinite-scroll' },
       { name: '加载', code: 'Loading' },
@@ -67,19 +67,19 @@ export const navConfig = [
     ],
   },
   {
-    title: '业务组件',
+    title: 'business component',
     list: [
-      { name: '商品卡片', code: 'goods' },
-      { name: '价格', code: 'price' },
+      { name: 'commodity card', code: 'goods' },
+      { name: 'price', code: 'price' },
     ],
   },
   {
-    title: '其它组件',
+    title: 'other components',
     list: [
-      { name: '组件加载器', code: 'component-provider' },
-      { name: '错误边界', code: 'error-boundary' },
-      { name: '传送门', code: 'portal' },
-      { name: '视觉上隐藏', code: 'visually-hidden' },
+      { name: 'component loader', code: 'component-provider' },
+      { name: 'error boundary', code: 'error-boundary' },
+      { name: 'portal', code: 'portal' },
+      { name: 'visually hidden', code: 'visually-hidden' },
     ],
   },
 ];

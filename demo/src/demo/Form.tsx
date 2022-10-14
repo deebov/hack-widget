@@ -8,7 +8,7 @@ export default () => {
 
   return (
     <DemoPage>
-      <DemoSection title="基础用法">
+      <DemoSection title="Basic usage">
         <Form theme={theme}>
           <FormItem>
             <Input value={usename} placeholder="用户名" onChange={setUsername} maxLength={6} />

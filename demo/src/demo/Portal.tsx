@@ -6,7 +6,7 @@ export default () => {
   const containerRef = useRef(null);
   return (
     <DemoPage>
-      <DemoSection title="基础用法">
+      <DemoSection title="Basic usage">
         <Portal>
           <p>出现到 `document.body`</p>
         </Portal>

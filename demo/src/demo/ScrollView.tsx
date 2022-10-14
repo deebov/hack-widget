@@ -8,7 +8,7 @@ export default () => {
   const [list, setList] = React.useState([{ text: '内容1' }, { text: '内容2' }, { text: '内容3' }]);
   return (
     <DemoPage>
-      <DemoSection title="基础用法">
+      <DemoSection title="Basic usage">
         <button
           type="button"
           onClick={() =>

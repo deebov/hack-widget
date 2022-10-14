@@ -8,7 +8,7 @@ const file = new File(['foo'], 'foo.txt', {
 
 export default () => (
   <DemoPage>
-    <DemoSection title="基础用法">
+    <DemoSection title="Basic usage">
       <FileCard file={file} />
     </DemoSection>
     <DemoSection title="指定拓展名">

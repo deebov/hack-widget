@@ -4,7 +4,7 @@ import { Notice } from '../../../src';
 
 export default () => (
   <DemoPage>
-    <DemoSection title="基础用法" bg="gray">
+    <DemoSection title="Basic usage" bg="gray">
       <div style={{ position: 'relative', height: '60px' }}>
         <Notice content="小蜜公告内容小蜜公告内容小蜜公告内容小蜜公告内容小蜜公告内容小蜜公告内容小蜜公告内容" />
       </div>

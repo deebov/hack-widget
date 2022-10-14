@@ -12,7 +12,7 @@ export default () => {
 
   return (
     <DemoPage>
-      <DemoSection title="基础用法">
+      <DemoSection title="Basic usage">
         <Card>
           <List>
             <ListItem

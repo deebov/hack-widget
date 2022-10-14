@@ -4,7 +4,7 @@ import { RateActions, LocaleProvider } from '../../../src';
 
 export default () => (
   <DemoPage>
-    <DemoSection title="基础用法" bg="gray">
+    <DemoSection title="Basic usage" bg="gray">
       <RateActions
         onClick={(val: string) => {
           console.log(val);

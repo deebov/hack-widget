@@ -35,7 +35,7 @@ function ErrorFallback({ error, errorInfo }: FallbackProps) {
 
 export default () => (
   <DemoPage>
-    <DemoSection title="基础用法">
+    <DemoSection title="Basic usage">
       <ErrorBoundary>
         <BuggyCounter />
       </ErrorBoundary>

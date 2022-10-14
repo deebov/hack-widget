@@ -13,15 +13,15 @@ export default () => {
       onClose={() => {
         setActive(false);
       }}
-      title="请选择您要咨询的订单"
-      actions={[{ label: '没有对应订单' }]}
+      title="Please select the order you want to consult"
+      actions={[{ label: 'no corresponding order' }]}
     >
       <div>
         <Tabs index={tabIndex} onChange={setTabIndex}>
-          <Tab label="已购买">
+          <Tab label="bought">
             <div>
               <Search
-                placeholder="输入宝贝关键词等"
+                placeholder="Enter baby keywords, etc."
                 onSearch={(q) => {
                   console.log(q);
                 }}
@@ -31,15 +31,15 @@ export default () => {
               />
               <Card className="OrderGroup">
                 <div className="OrderGroup-header">
-                  <h3>耐克官方旗舰店最多字数…</h3>
-                  <span className="OrderGroup-status">交易状态</span>
+                  <h3>Nike's official flagship store has the largest number of words...</h3>
+                  <span className="OrderGroup-status">trading status</span>
                 </div>
                 <div className="OrderGroup-list">
                   <Goods
                     type="order"
                     img="//gw.alicdn.com/tfs/TB1p_nirYr1gK0jSZR0XXbP8XXa-300-300.png"
-                    name="Air Joden2019限定倒勾棕色高帮篮球鞋最多字…"
-                    desc="颜色分类：棕色；42码"
+                    name="Air Joden 2019 limited barb brown high-top basketball shoes with the most words…"
+                    desc="Color classification: brown; 42 yards"
                     currency="¥"
                     price={30000.04}
                     count={1}
@@ -49,37 +49,37 @@ export default () => {
                   />
                 </div>
                 <div className="OrderGroup-actions">
-                  <Button size="sm">订单详情</Button>
+                  <Button size="sm">order details</Button>
                   <Button color="primary" size="sm">
-                    发送
+                    send
                   </Button>
                 </div>
               </Card>
             </div>
           </Tab>
-          <Tab label="购物车">
-            <p>内容2</p>
+          <Tab label="shopping cart">
+            <p>Content 2</p>
           </Tab>
-          <Tab label="收藏夹">
-            <p>内容3</p>
+          <Tab label="Favorites">
+            <p>Content 3</p>
           </Tab>
-          <Tab label="足迹">
-            <p>内容3</p>
+          <Tab label="footprint">
+            <p>Content 4</p>
           </Tab>
         </Tabs>
         <Confirm
           active={open}
-          title="确认要发送吗？"
+          title="Are you sure you want to send?"
           onClose={() => {
             setOpen(false);
           }}
           actions={[
             {
-              label: '确认',
+              label: 'confirm',
               color: 'primary',
             },
             {
-              label: '取消',
+              label: 'Cancel',
             },
           ]}
         >

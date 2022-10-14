@@ -6,7 +6,7 @@ export default () => {
   const [percentage, setPercentage] = useState(20);
   return (
     <DemoPage>
-      <DemoSection title="基础用法">
+      <DemoSection title="Basic usage">
         <Progress value={percentage} />
         <br />
         <Button onClick={() => setPercentage(percentage - 10)}>减少</Button>

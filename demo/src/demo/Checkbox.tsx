@@ -24,7 +24,7 @@ export default () => {
 
   return (
     <DemoPage>
-      <DemoSection title="基础用法" bg="gray">
+      <DemoSection title="Basic usage" bg="gray">
         <Checkbox value="abc" label="ABC" checked={checked} onChange={() => setChecked(!checked)} />
       </DemoSection>
       <DemoSection title="禁用状态" bg="gray">

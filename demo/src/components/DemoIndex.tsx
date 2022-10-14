@@ -13,7 +13,7 @@ export default function DemoIndex() {
             {t.list.map((tt) => (
               <li key={tt.code}>
                 <Link className="demo-nav-link" to={`/${tt.code}`}>
-                  {`${toPascalCase(tt.code)} ${tt.name}`}
+                  {`${toPascalCase(tt.code)}`}
                 </Link>
               </li>
             ))}

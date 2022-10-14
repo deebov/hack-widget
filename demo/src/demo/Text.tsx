@@ -4,18 +4,19 @@ import { Text } from '../../../src';
 
 export default () => (
   <DemoPage>
-    <DemoSection title="基础用法">
-      <Text>文本内容</Text>
+    <DemoSection title="Basic usage">
+      <Text>text content</Text>
     </DemoSection>
-    <DemoSection title="单行显示">
-      <Text truncate>这是一段非常非常非常非常非常非常非常非常长的文本内容</Text>
+    <DemoSection title="single line display">
+      <Text truncate>This is a very very very very very very long text</Text>
     </DemoSection>
-    <DemoSection title="多行显示">
+    <DemoSection title="Display on multiple lines">
       <Text truncate={2}>
-        这是一段非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常长的文本内容
+        This is a very very very very very very very very very very very very very very very very
+        very very very very very very very very very long text
       </Text>
     </DemoSection>
-    <DemoSection title="单词换行">
+    <DemoSection title="word wrap">
       <Text breakWord>ThisIsVeryVeryVeryVeryVeryVeryVeryLongEnglishWord</Text>
     </DemoSection>
   </DemoPage>

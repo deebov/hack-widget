@@ -4,7 +4,7 @@ import { Search } from '../../../src';
 
 export default () => (
   <DemoPage>
-    <DemoSection title="基础用法">
+    <DemoSection title="Basic usage">
       <Search placeholder="输入宝贝关键词等" />
     </DemoSection>
     <DemoSection title="禁用状态">

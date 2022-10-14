@@ -37,11 +37,11 @@ export type ChatProps = Omit<ComposerProps, 'onFocus' | 'onChange' | 'onBlur'> &
      */
     // loadMoreText?: string;
     /**
-     * 在消息列表上面的渲染函数
+     * 在message list上面的渲染函数
      */
     // renderBeforeMessageList?: () => React.ReactNode;
     /**
-     * 消息列表 ref
+     * message list ref
      */
     messagesRef?: React.RefObject<MessageContainerHandle>;
     /**
@@ -49,11 +49,11 @@ export type ChatProps = Omit<ComposerProps, 'onFocus' | 'onChange' | 'onBlur'> &
      */
     // onRefresh?: () => Promise<any>;
     /**
-     * 滚动消息列表回调
+     * 滚动message list回调
      */
     // onScroll?: (event: React.UIEvent<HTMLDivElement, UIEvent>) => void;
     /**
-     * 消息列表
+     * message list
      */
     // messages: MessageProps[];
     /**

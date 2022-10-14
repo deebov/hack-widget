@@ -6,7 +6,7 @@ const symbols = document.getElementById('__CHATUI_ICONS__')?.querySelectorAll('s
 
 export default () => (
   <DemoPage>
-    <DemoSection title="基础用法">
+    <DemoSection title="Basic usage">
       <Icon type="bullhorn" />
     </DemoSection>
     <DemoSection title="旋转动画">

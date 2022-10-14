@@ -4,7 +4,7 @@ import { Empty, Button } from '../../../src';
 
 export default () => (
   <DemoPage>
-    <DemoSection title="基础用法">
+    <DemoSection title="Basic usage">
       <Empty tip="暂无数据" />
     </DemoSection>
     <DemoSection title="定制内容">

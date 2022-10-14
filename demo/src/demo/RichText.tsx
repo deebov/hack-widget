@@ -6,7 +6,7 @@ const html = '<div><h1>H1标题</h1><p>这是段落<em>em标签</em><strong>stro
 
 export default () => (
   <DemoPage>
-    <DemoSection title="基础用法">
+    <DemoSection title="Basic usage">
       <RichText content={html} />
     </DemoSection>
   </DemoPage>

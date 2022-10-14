@@ -4,7 +4,7 @@ import { Stepper, Step } from '../../../src';
 
 export default () => (
   <DemoPage>
-    <DemoSection title="基础用法">
+    <DemoSection title="Basic usage">
       <Stepper current={3}>
         <Step title="买家申请退款退货" desc="昨天 12:00" />
         <Step title="卖家处理申请" desc="卖家还有22小时22分22秒处理" />

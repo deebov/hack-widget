@@ -5,7 +5,7 @@ import { VisuallyHidden } from '../../../src';
 
 export default () => (
   <DemoPage>
-    <DemoSection title="基础用法">
+    <DemoSection title="Basic usage">
       <button type="button">
         <VisuallyHidden>Save</VisuallyHidden>
         <svg aria-hidden width="32" height="32">

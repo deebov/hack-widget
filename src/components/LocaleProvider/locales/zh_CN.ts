@@ -19,7 +19,7 @@ export default {
   SendConfirm: {
     title: '发送图片',
     send: '发送',
-    cancel: '取消',
+    cancel: 'Cancel',
   },
   RateActions: {
     up: '赞同',

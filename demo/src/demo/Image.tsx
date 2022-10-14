@@ -14,7 +14,7 @@ const imgs = [
 
 export default () => (
   <DemoPage>
-    <DemoSection title="基础用法">
+    <DemoSection title="Basic usage">
       <Image src={picUrl} width="299" height="200" alt="图片名" />
     </DemoSection>
     <DemoSection title="响应式图片">

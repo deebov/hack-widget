@@ -19,7 +19,7 @@ export default () => {
 
   return (
     <DemoPage>
-      <DemoSection title="基础用法">
+      <DemoSection title="Basic usage">
         <button onClick={() => setDisabled((s) => !s)} type="button">
           Toggle
         </button>

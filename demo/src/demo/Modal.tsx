@@ -19,7 +19,7 @@ export default () => {
 
   return (
     <DemoPage>
-      <DemoSection title="基础用法">
+      <DemoSection title="Basic usage">
         <Card>
           <List>
             <ListItem
@@ -92,7 +92,7 @@ export default () => {
         onClose={() => {
           setOpen4(false);
         }}
-        actions={[{ label: '确认', color: 'primary' }, { label: '取消' }]}
+        actions={[{ label: 'confirm', color: 'primary' }, { label: 'Cancel' }]}
       >
         <MainContent />
       </Modal>

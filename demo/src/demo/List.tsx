@@ -4,7 +4,7 @@ import { Card, List, ListItem } from '../../../src';
 
 export default () => (
   <DemoPage>
-    <DemoSection title="基础用法" bg="gray">
+    <DemoSection title="Basic usage" bg="gray">
       <List>
         <ListItem content="内容1" />
         <ListItem content="内容2" />

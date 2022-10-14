@@ -87,7 +87,7 @@ const App = () => {
 
   return (
     <Chat
-      navbar={{ title: '智能助理' }}
+      navbar={{ title: 'Assistant' }}
       messages={messages}
       renderMessageContent={renderMessageContent}
       onSend={handleSend}

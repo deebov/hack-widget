@@ -7,7 +7,7 @@ export default () => {
 
   return (
     <DemoPage>
-      <DemoSection title="基础用法">
+      <DemoSection title="Basic usage">
         <Select placeholder="Select option">
           <option value="option1">Option 1</option>
           <option value="option2">Option 2</option>

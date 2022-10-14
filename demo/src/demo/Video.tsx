@@ -5,7 +5,7 @@ import { Video } from '../../../src';
 
 export default () => (
   <DemoPage>
-    <DemoSection title="基础用法">
+    <DemoSection title="Basic usage">
       <Video
         cover="//img.alicdn.com/imgextra/i1/6000000000012/O1CN01vlHyZv1BxXNDA564X_!!6000000000012-0-tbvideo.jpg"
         src="//cloud.video.taobao.com/play/u/3544775890/p/1/e/6/t/1/277895493609.mp4"

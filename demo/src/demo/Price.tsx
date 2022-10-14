@@ -6,7 +6,7 @@ const number = 1234567.89;
 
 export default () => (
   <DemoPage>
-    <DemoSection title="基础用法">
+    <DemoSection title="Basic usage">
       <Price price={123.45} />
     </DemoSection>
     <DemoSection title="货币符号">

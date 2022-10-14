@@ -4,46 +4,48 @@ import { Card, List, ListItem, toast } from '../../../src';
 
 export default () => (
   <DemoPage>
-    <DemoSection title="基础用法">
+    <DemoSection title="Basic usage">
       <Card>
         <List>
           <ListItem
-            content="文字提示"
+            content="text prompt"
             as="button"
             onClick={() => {
-              toast.show('提示内容', '');
+              toast.show('Tips', '');
             }}
             rightIcon="chevron-right"
           />
           <ListItem
-            content="成功提示"
+            content="success tips"
             as="button"
             onClick={() => {
-              toast.success('操作成功');
+              toast.success('Successful operation');
             }}
             rightIcon="chevron-right"
           />
           <ListItem
-            content="失败提示"
+            content="failure prompt"
             as="button"
             onClick={() => {
-              toast.fail('操作失败');
+              toast.fail('operation failed');
             }}
             rightIcon="chevron-right"
           />
           <ListItem
-            content="加载提示"
+            content="loading prompt"
             as="button"
             onClick={() => {
-              toast.loading('加载中...', -1);
+              toast.loading('Loading...', -1);
             }}
             rightIcon="chevron-right"
           />
           <ListItem
-            content="长文案"
+            content="long copy"
             as="button"
             onClick={() => {
-              toast.success('很高兴能帮助到您文案，到您文案您文案到您文案到您文案');
+              toast.success(
+                "I'm glad to help your copy, to your copy, to your copy, to your copy, to your copy",
+              );
             }}
             rightIcon="chevron-right"
           />
