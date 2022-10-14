@@ -459,7 +459,7 @@ export default () => {
         toolbar={[
           {
             type: 'translate',
-            title: translation.active ? 'Disable translation' : 'Enable translation',
+            title: 'Translate',
             img: 'https://cdn4.iconfinder.com/data/icons/logos-4/24/Translate-512.png',
           },
         ]}
