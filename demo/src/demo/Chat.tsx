@@ -13,9 +13,8 @@ import Chat, {
   MessageProps,
   ToolbarItemProps,
   useMessages,
-} from '../../../src';
+} from '@chatui/core';
 import { User } from '../../../src/components/Message/Message';
-import { DemoPage } from '../components';
 
 type CarouselData = {
   cards: {
@@ -42,9 +41,13 @@ type Response = {
 };
 
 const translate = async (payload: { target: string; text: string }) => {
-  const res = await axios.post('https://chat.staging.ultimate.ai/api/translate', payload, {
-    headers: { Authorization: 'HACK-PACK-API-KEY' },
-  });
+  const res = await axios.post<{ text: string }>(
+    'https://chat.staging.ultimate.ai/api/translate',
+    payload,
+    {
+      headers: { Authorization: 'HACK-PACK-API-KEY' },
+    },
+  );
   return res;
 };
 
@@ -297,20 +300,49 @@ export default () => {
     // } else {
 
     // }
-    const res = await translate({ target: 'es', text: message.content.text });
+    console.log(message);
 
-    updateMsg(message._id, {
-      ...message,
-      content: {
-        text: res.data.text + ' [AI-translated]',
-      },
-    });
+    if (message.type === 'card') {
+      const textRes = await translate({ target: 'es', text: message.content.text });
+
+      const promises = message.content.buttons.map((btn: any) => {
+        return translate({ target: 'es', text: btn.text });
+      });
+
+      Promise.allSettled(promises).then((result) => {
+        const texts = result.map((value) => {
+          if (value.status === 'fulfilled') {
+            return { text: value.value.data.text };
+          }
+        });
+
+        updateMsg(message._id, {
+          ...message,
+          content: {
+            text: textRes.data.text,
+            buttons: texts,
+          },
+        });
+      });
+    } else {
+      const res = await translate({ target: 'es', text: message.content.text });
+
+      updateMsg(message._id, {
+        ...message,
+        content: {
+          text: res.data.text + ' [AI-translated]',
+        },
+      });
+    }
   };
 
   function handleToolbarClick(item: ToolbarItemProps) {
     if (item.type === 'translate') {
       messages.forEach((msg) => {
-        if ((msg.type === 'text' || msg.type === 'button') && msg.position === 'left') {
+        if (
+          (msg.type === 'text' || msg.type === 'button' || msg.type === 'card') &&
+          msg.position === 'left'
+        ) {
           translateAndUpdateMessage(msg);
         }
       });
