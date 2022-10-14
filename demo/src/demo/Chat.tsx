@@ -254,6 +254,46 @@ export default () => {
     }
   }
 
+  // send callback
+  async function handleSendTranslation(
+    type: string,
+    val: string,
+    orgVal: string,
+    cardIndex?: number,
+  ) {
+    if (type === 'text' && val.trim()) {
+      appendMsg({
+        type: 'text',
+        content: { text: val },
+        position: 'right',
+      });
+
+      setTyping(true);
+
+      const res = await sendMessage(orgVal, cardIndex);
+
+      setTyping(false);
+
+      appendResponseMessages(res.data.messages);
+    }
+
+    if (type === 'button') {
+      appendMsg({
+        type: 'text',
+        content: { text: val },
+        position: 'right',
+      });
+
+      setTyping(true);
+
+      const res = await sendMessage(orgVal, cardIndex);
+
+      setTyping(false);
+
+      appendResponseMessages(res.data.messages);
+    }
+  }
+
   function renderMessageContent(msg: MessageProps) {
     const { type, content } = msg;
 
@@ -265,7 +305,11 @@ export default () => {
         return (
           <Button
             onClick={() => {
-              handleSend('button', content.original || content.text);
+              if (content.original) {
+                handleSendTranslation('button', content.text, content.original);
+              } else {
+                handleSend('button', content.text);
+              }
             }}
           >
             {content.text}
@@ -279,7 +323,11 @@ export default () => {
               {content.buttons.map((btn: { text: string }) => (
                 <Button
                   onClick={() => {
-                    handleSend('button', btn.original || btn.text);
+                    if (btn.original) {
+                      handleSendTranslation('button', btn.text, btn.original);
+                    } else {
+                      handleSend('button', btn.text);
+                    }
                   }}
                 >
                   {btn.text}
