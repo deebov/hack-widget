@@ -62,7 +62,7 @@ export default () => {
   const { messages, appendMsg, setTyping, prependMsgs, updateMsg } = useMessages();
   const msgRef = React.useRef(null);
   const [conversationId, setConversationId] = useState(uuidv4());
-  const [translation, setTranlation] = useState<{ active: boolean; target: string | null }>({
+  const [translation, setTranlation] = useState<{ active: boolean; target: string }>({
     active: false,
     target: 'de',
   });
@@ -78,13 +78,18 @@ export default () => {
 
       if (isButtonCard) {
         if (translation.active) {
-          translate({ target: translation.target, text: msg.text }).then((res) => {
+          Promise.all([
+            translate({ target: translation.target, text: msg.text }),
+            ...msg.buttons.map((btn) => translate({ target: translation.target, text: btn.text })),
+          ]).then((res) => {
             appendMsg({
               type: 'card',
               content: {
-                text: res.data.text,
+                text: res[0].data.text,
                 original: msg.text,
-                buttons: msg.buttons,
+                buttons: res
+                  .slice(1)
+                  .map((btn, idx) => ({ text: btn.data.text, original: msg.buttons[idx].text })),
               },
             });
           });
@@ -444,7 +449,7 @@ export default () => {
               title: 'More',
             },
           ],
-          title: 'Assistant',
+          title: 'Ultimate Assistant',
         }}
         locale="en-US"
         // loadMoreText='Load More'
